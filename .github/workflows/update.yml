@@ -36,7 +36,7 @@ jobs:
   Pack-Push:
     name: "Pack & Push"
     needs: [Directories]
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     strategy:
       max-parallel: 1
       matrix:
@@ -64,6 +64,33 @@ jobs:
 
       - name: Run script
         run: python update.py
+      
+      - name: Get path of nuspec
+        id: nuspec
+        run: |
+          $nuspec = Get-ChildItem -Filter "*.nuspec" -Recurse | Select-Object -ExpandProperty FullName
+          echo "nuspec=$nuspec" >> $Env:GITHUB_OUTPUT
+
+      - name: Choco Pack
+        uses: crazy-max/ghaction-chocolatey@v3
+        with:
+          args: pack ${{ steps.nuspec.outputs.nuspec }}
+
+      - name: Get path of package
+        id: package
+        run: |
+          $package = Get-ChildItem -Filter "*.nupkg" -Recurse | Select-Object -ExpandProperty FullName
+          echo "package=$package" >> $Env:GITHUB_OUTPUT
+      
+      - name: Choco Register
+        uses: crazy-max/ghaction-chocolatey@v3
+        with:
+          args: apikey --api-key ${{ secrets.CHOCOAPI }} -source https://push.chocolatey.org/
+
+      - name: Push to Chocolately
+        uses: crazy-max/ghaction-chocolatey@v3
+        with:
+          args: push ${{ steps.package.outputs.package }} --source https://push.chocolatey.org/
 
       # Commit all changed files back to the repository
       - name: Push to branch
