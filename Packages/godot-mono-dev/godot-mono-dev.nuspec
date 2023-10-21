@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>godot-mono-dev</id>
-    <version>4.2-beta2-Test</version>
+    <version>4.2-beta2</version>
     <packageSourceUrl>https://github.com/godotengine/godot</packageSourceUrl>
     <owners>Godot Engine</owners>
     <title>godot-mono-dev (Install)</title>
