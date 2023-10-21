@@ -1,4 +1,4 @@
-name: Run Python script and commit changes
+name: Update & Push
 
 on:
   schedule:
@@ -31,10 +31,10 @@ jobs:
         pip install requests
 
     - name: Run script
-      working-directory: godot-dev
+      working-directory: "Packages/godot-dev"
       run: python update.py
     - name: Run script
-      working-directory: godot-mono-dev
+      working-directory: "Packages/godot-mono-dev"
       run: python update.py
 
     # Commit all changed files back to the repository
