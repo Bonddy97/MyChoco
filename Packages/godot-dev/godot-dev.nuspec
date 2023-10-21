@@ -3,15 +3,15 @@
   <metadata>
     <id>godot-dev</id>
     <version>4.2-beta2</version>
-    <packageSourceUrl>https://github.com/godotengine/godot</packageSourceUrl>
+    <projectSourceUrl>https://github.com/godotengine/godot</projectSourceUrl>
     <owners>Godot Engine</owners>
-    <title>godot-dev (Install)</title>
+    <title>Godot Dev</title>
     <authors>Cook1e</authors>
     <projectUrl>https://github.com/godotengine/godot</projectUrl>
     <iconUrl>https://avatars.githubusercontent.com/u/6318500</iconUrl>
     <licenseUrl>https://github.com/godotengine/godot/blob/master/LICENSE.txt</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <projectSourceUrl>https://github.com/Bonddy97/MyChoco/tree/main/Packages/godot-dev</projectSourceUrl>
+    <packageSourceUrl>https://github.com/Bonddy97/MyChoco/tree/main/Packages/godot-dev</packageSourceUrl>
     <docsUrl>http://docs.godotengine.org/</docsUrl>
     <bugTrackerUrl>https://github.com/godotengine/godot/issues</bugTrackerUrl>
     <tags>godot game engine game-engine graphics 3d 2d</tags>
