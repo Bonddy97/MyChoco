@@ -24,8 +24,8 @@ def get_latest():
     response = requests.get(releases)
     json = response.json()
 
-    re_32  = "Godot_v.+-dev.+_mono_win32"
-    re_64  = "Godot_v.+-dev.+_mono_win64"
+    re_32  = "Godot_v.+_mono_win32"
+    re_64  = "Godot_v.+_mono_win64"
 
     for release in json:
         if not release['prerelease']:
