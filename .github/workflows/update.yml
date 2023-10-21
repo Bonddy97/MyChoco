@@ -2,47 +2,73 @@ name: Update & Push
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Runs every day at midnight
+    - cron: '0 0 * * *'  # 每天午夜运行
   workflow_dispatch:
   push:
 
 jobs:
-  build:
-
+  Directories:
+    name: Get directories
     runs-on: ubuntu-latest
 
     permissions:
-      # Give the default GITHUB_TOKEN write permission to commit and push the
-      # added or changed files to the repository.
+      # 将默认的 GITHUB_TOKEN 赋予对仓库进行提交和推送的写权限。
       contents: write
+
+    outputs:
+      folders: ${{ steps.directories.outputs.folders }}
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
+    - run: sudo apt update && sudo apt install tree jq -y
+      shell: bash
 
-    - name: Install dependencies
+    - name: Get directories
+      id: directories
       run: |
-        python -m pip install --upgrade pip
-        pip install requests
+        cd ./Packages
+        folders=$(tree -J -d -L 1 | jq -c '.[0].contents | map(.name)')
+        echo $folders
+        echo "folders=$folders" >> $GITHUB_OUTPUT
 
-    - name: Run script
-      working-directory: "Packages/godot-dev"
-      run: python update.py
-    - name: Run script
-      working-directory: "Packages/godot-mono-dev"
-      run: python update.py
+  Pack-Push:
+    name: "Pack & Push"
+    needs: [Directories]
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        folder: ${{ fromJson(needs.Directories.outputs.folders )}}
+    defaults:
+      run:
+        working-directory: "Packages/${{ matrix.folder }}"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    # Commit all changed files back to the repository
-    - name: Push to branch
-      uses: stefanzweifel/git-auto-commit-action@v5
-      with:
-        # Optional. Commit message for the created commit.
-        # Defaults to "Apply automatic changes"
-        commit_message: Update packages version.
-    
+      - name: Update repository
+        run: |
+          git pull
 
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+  
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Run script
+        run: python update.py
+
+      # Commit all changed files back to the repository
+      - name: Push to branch
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          # 可选。用于创建提交的提交信息。
+          # 默认为"Apply automatic changes"。
+          commit_message: Update ${{ matrix.folder }}

@@ -1,6 +1,6 @@
 ﻿<div align = center>
 
-<img src="https://godotengine.org/assets/press/logo_large_color_dark.png" height="200" alt="banner">
+<img src="./.assets/chocolatey-color.svg" height="200" alt="banner">
 
 <h1>My Chocolately Packages</h1>
 

@@ -5,7 +5,8 @@ import hashlib
 
 # Base infos.
 releases = 'https://api.github.com/repos/godotengine/godot-builds/releases'
-file_path = './tools/chocolateyinstall.ps1'
+script_path = './tools/chocolateyinstall.ps1'
+nuspec_file = './godot-dev.nuspec'
 
 # Get the file checksum
 def get_checksum(url):
@@ -43,26 +44,44 @@ def get_latest():
     raise Exception("No release with suitable binaries found.")
 
 # Modify the update info about the packages.
-def update_package(file_path, latest):
-    with open(file_path, 'r') as file:
-        script = file.read()
+def update_package(script_path, nuspec_file, latest):
+    # Modify tools/chocolateyinstall.ps1
+    with open(script_path, 'r+') as script_file:
+        script = script_file.read()
 
-    replacements = {
-        "(^[$]url\s*=\s*)('.*')": f"\\1'{latest['URL32']}'",
-        "(^[$]checksum\s*=\s*)('.*')": f"\\1'{latest['Checksum32']}'",
-        "(^[$]url64\s*=\s*)('.*')": f"\\1'{latest['URL64']}'",
-        "(^[$]checksum64\s*=\s*)('.*')": f"\\1'{latest['Checksum64']}'"
-    }
+        script_replacements = {
+            r"(^[$]url\s*=\s*)('.*')": f"\\1'{latest['URL32']}'",
+            r"(^[$]checksum\s*=\s*)('.*')": f"\\1'{latest['Checksum32']}'",
+            r"(^[$]url64\s*=\s*)('.*')": f"\\1'{latest['URL64']}'",
+            r"(^[$]checksum64\s*=\s*)('.*')": f"\\1'{latest['Checksum64']}'"
+        }
 
-    for pattern, replacement in replacements.items():
-        script = re.sub(pattern, replacement, script, flags=re.MULTILINE)
+        for pattern, replacement in script_replacements.items():
+            script = re.sub(pattern, replacement, script, flags=re.MULTILINE)
 
-    print("---------------------------------------------------------------------")
-    print(script)
-    print("---------------------------------------------------------------------")
+        print("---------------------------------------------------------------------")
+        print(script)
+        print("---------------------------------------------------------------------")
 
-    with open(file_path, 'w') as file:
-        file.write(script)
+        script_file.seek(0)
+        script_file.write(script)
+        script_file.truncate()
+
+    # Modify godot-mono-dev.nuspec
+    with open(nuspec_file, 'r+') as nuspec_file:
+        nuspec = nuspec_file.read()
+
+        version_pattern = r"<version>[^<]+</version>"
+        version_replacement = f"<version>{latest['Version']}</version>"
+        nuspec = re.sub(version_pattern, version_replacement, nuspec)
+
+        print("---------------------------------------------------------------------")
+        print(nuspec)
+        print("---------------------------------------------------------------------")
+
+        nuspec_file.seek(0)
+        nuspec_file.write(nuspec)
+        nuspec_file.truncate()
 
 # Get the info choco needed.
 latest_release = get_latest()
@@ -70,4 +89,4 @@ latest_release['Checksum32'] = get_checksum(latest_release['URL32'])
 latest_release['Checksum64'] = get_checksum(latest_release['URL64'])
 
 # Update files.
-update_package(os.path.join(os.getcwd(), file_path), latest_release)
+update_package(os.path.join(os.getcwd(), script_path), os.path.join(os.getcwd(), nuspec_file), latest_release)
