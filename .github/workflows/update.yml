@@ -89,6 +89,7 @@ jobs:
           args: apikey --api-key ${{ secrets.CHOCOAPI }} -source https://push.chocolatey.org/
 
       - name: Push to Chocolately
+        continue-on-error: true
         uses: crazy-max/ghaction-chocolatey@v3
         with:
           args: push ${{ steps.package.outputs.package }} --source https://push.chocolatey.org/
