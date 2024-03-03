@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>godot-mono-dev</id>
-    <version>4.3-de3</version>
+    <version>4.3-de4</version>
     <projectSourceUrl>https://github.com/godotengine/godot</projectSourceUrl>
     <owners>Godot Engine</owners>
     <title>Godot Mono Dev</title>
