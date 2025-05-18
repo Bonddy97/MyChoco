@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>godot-dev</id>
-    <version>4.5-de3</version>
+    <version>4.5-de4</version>
     <projectSourceUrl>https://github.com/godotengine/godot</projectSourceUrl>
     <owners>Godot Engine</owners>
     <title>Godot Dev</title>
