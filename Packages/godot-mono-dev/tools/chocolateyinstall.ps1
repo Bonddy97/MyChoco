@@ -10,11 +10,11 @@
 #$toolsDir = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 $packageName = "Godot-mono-dev"
 # For win32
-$url = 'https://github.com/godotengine/godot-builds/releases/download/4.7-rc2/Godot_v4.7-rc2_mono_win32.zip'
-$checksum = 'd354f77e3c5ac93b6472c04af9d264282c14b275e8c666a4f9c3998a51933929'
+$url = 'https://github.com/godotengine/godot-builds/releases/download/4.7-rc3/Godot_v4.7-rc3_mono_win32.zip'
+$checksum = '15a8d4c0591d8e5f2b446555ccd034f04e5193afb14c612fe183fd68cbc4eff7'
 # For win64
-$url64 = 'https://github.com/godotengine/godot-builds/releases/download/4.7-rc2/Godot_v4.7-rc2_mono_win64.zip'
-$checksum64 = 'cb0f2f130858cc46afb7fc26b6fbe969a8f270d386b2c0688fda6c865fa0564d'
+$url64 = 'https://github.com/godotengine/godot-builds/releases/download/4.7-rc3/Godot_v4.7-rc3_mono_win64.zip'
+$checksum64 = 'e46828e9494c2436ecdadd728eada0f27afa85b6bb02cbe924baf0730a416596'
 # Define unizip location.
 $unzipLocation = Join-Path ([Environment]::GetFolderPath("LocalApplicationData")) $packageName
 
